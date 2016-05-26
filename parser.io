@@ -10,30 +10,30 @@ parseHTML := method(
   url := System args at(1),
 
   SGML#use SGML addon
-  Bot := Object clone//root object!
-  Bot HC := HttpClient clone //clone Httpclient 4 use HCUrl
-  Bot HC HCRequest setHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.63 Safari/537.36")//user fake UA
-  Bot HC HCRequest setHeader("Referer",System args at(1))//
-  Bot HC HCRequest setHeader("Accept","*/*")//set mediatype
-  Bot HC HCRequest setHeader("Cache-Control","no-cache")//Cache-Control
-  Bot HC HCRequest setHeader("Connection","keep-alive")//connection setting
-  Bot HC HCRequest setHeader("Host",System args at(1))//set fake host header
-
-
-  Bot HC HCUrl urlSeq := System args at(1)//url ready up!
-  Bot HC rslt := Bot HC HCUrl getResponse content println//fire^^ 2 change method!!!!//TODO
+  Parser := Object clone do(//root object!
+    HC := HttpClient clone do( //clone Httpclient 4 use HCUrl
+      HCRequest setHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.63 Safari/537.36")//user fake UA
+      HCRequest setHeader("Referer",System args at(1))//
+      HCRequest setHeader("Accept","*/*")//set mediatype
+      HCRequest setHeader("Cache-Control","no-cache")//Cache-Control
+      HCRequest setHeader("Connection","keep-alive")//connection setting
+      HCRequest setHeader("Host",System args at(1))//set fake host header
+      HCUrl urlSeq := System args at(1)//url ready
+      rslt := HCUrl getResponse content
+    )
+  )
 
   /*SGML*/
-  ParseHTML := Bot HC rslt asUTF8 asXML#rslt convart to list
+  ParseHTML := Parser HC rslt asString asUTF8 println#rslt convart to list
 
 
 
 
   //logging
-  Bot logfile := File with(System launchPath .. "/" .. "log.txt")
-  Bot logfile remove openForUpdating setContents(ParseHTML asString) close//write and close log
+  Parser logfile := File with(System launchPath .. "/" .. "log.txt")
+  Parser logfile remove openForUpdating setContents(ParseHTML asString) close
   //convart charaset use nkf
-  Bot sh := System clone do(
+  Parser sh := System clone do(
     system("nkf -w -b --overwrite " .. System launchPath .. "/log.txt")
   )
 )
