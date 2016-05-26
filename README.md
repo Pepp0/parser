@@ -13,4 +13,5 @@ cmd: io parser http://hoge.com
 
 require
 io language
-and it's addons
+ and it's addons
+nkf
