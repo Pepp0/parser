@@ -1,17 +1,11 @@
 # parser
 
-
-
-io language practice
-
-
-
-this program do get text 4 html
+this program do get any 4 html
 
 usage
-cmd: io parser http://hoge.com
+cmd: io parser http://hoge.com requestMethod port
 
 require
-io language
- and it's addons
+io language and it's addons
 nkf
+
