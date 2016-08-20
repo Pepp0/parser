@@ -19,17 +19,16 @@ parseHTML := method(
       HCRequest setHeader("Accept","*/*")//set mediatype
       HCRequest setHeader("Cache-Control","no-cache")//Cache-Control
       HCRequest setHeader("Connection","keep-alive")//connection setting
-      HCRequest setHeader("Host",System args at(1))//set fake host header
-      HCRequest port = System args at(3) ?  System args at(3) asNumber//set port
-      HCRequest httpMethod = System args at(2) ? System args at(2)//set request method
+      HCRequest setHeader("Host",(System args at(1) split("/") at(2)))//set fake host header
+      HCRequest port =  80//set port
+      HCRequest httpMethod =  "GET"//set request method
       HCUrl urlSeq := System args at(1)//url ready
-      rslt := HCUrl getResponse content
+      rslt := HCUrl getResponse
     )
   )
 
-  rslt := Parser HC rslt
   /*SGML*/
-  ParseHTML := Parser HC rslt asUTF8 println#rslt convart to list
+  ParseHTML := Parser HC rslt content asUTF8 println#rslt convart to list
 
 
   //logging
